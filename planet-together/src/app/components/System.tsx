@@ -10,6 +10,8 @@ export interface PlanetData {
   mass: number,
   velocity: THREE.Vector3,
   next_velocity: THREE.Vector3,
+  radius: number,
+  show: boolean,
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
 
@@ -26,6 +28,8 @@ export default function System(props: ThreeElements['mesh']) {
     mass: 3.285e24,
     velocity: new THREE.Vector3(0, 1000, 0),
     next_velocity: new THREE.Vector3(1, 0, 0),
+    radius: 1.0,
+    show: true,
     ref: useRef<THREE.Mesh>(null!),
   };
 
@@ -35,6 +39,8 @@ export default function System(props: ThreeElements['mesh']) {
     mass: 3.285e23,
     velocity: new THREE.Vector3(0, -10000, 0),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
+    radius: 1.0,
+    show: true,
     ref: useRef<THREE.Mesh>(null!),
   };
 
@@ -44,6 +50,8 @@ export default function System(props: ThreeElements['mesh']) {
     mass: 3.285e23,
     velocity: new THREE.Vector3(2500, -7000, 3000),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
+    radius: 0.5,
+    show: true,
     ref: useRef<THREE.Mesh>(null!),
   };
 
@@ -64,9 +72,14 @@ export default function System(props: ThreeElements['mesh']) {
           const force = direction.normalize().multiplyScalar(forceMagnitude);
           
           acceleration.add(force.divideScalar(currPlanet.mass));
-          if (distanceSquared < 1000000*1000000/5) {
+          const distance = new THREE.Vector3()
+          distance.copy(direction)
+          
+          if (distance.length() < 0.0001) {
             acceleration.copy(new THREE.Vector3(0,0,0))
             currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
+            currPlanet.show = false;
+            console.log(`RAAAGHHHHHHHH: ${distance.length()}`)
             return
           }
         }
@@ -82,7 +95,6 @@ export default function System(props: ThreeElements['mesh']) {
 
     planets.forEach((planet) => {
       planet.ref.current.position.copy(planet.position)
-      console.log(planet.position)
     })
     })
 

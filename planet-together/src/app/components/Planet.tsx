@@ -23,7 +23,7 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
         onClick={(event) => click(!clicked)}
         onPointerOver={(event) => hover(true)}
         onPointerOut={(event) => hover(false)}>
-        <sphereGeometry args={[1]} />
+        <sphereGeometry args={[planetData.radius]} />
         <meshStandardMaterial map={texture} />
       </mesh>
 
