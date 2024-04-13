@@ -2,8 +2,8 @@
 import * as THREE from 'three'
 import { createRoot } from 'react-dom/client'
 import React, { useRef, useState } from 'react'
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { OrbitControls, Plane } from '@react-three/drei'
 import Planet from './components/Planet'
 import System from './components/System'
 import Sidebar from './components/Sidebar'
@@ -19,6 +19,8 @@ export interface PlanetData {
   show: boolean,
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
+
+
 export default function Home() {
   
   const [isOrbit, setIsOrbit] = useState(false)
@@ -26,9 +28,8 @@ export default function Home() {
 
   return (
     <main className="bg-zinc-800 h-screen">
-      <div className="flex h-screen">
-        <button onClick={() => {setIsOrbit(!isOrbit)}}>Change Camera Mode</button>
-        <Sidebar />
+      <div className="flex h-full">
+        <Sidebar setIsOrbit={ setIsOrbit }/>
         <Canvas>
           <ambientLight intensity={Math.PI / 2} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
