@@ -5,15 +5,16 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import { Html } from "@react-three/drei"
 import type { PlanetData } from '../page'
 
-function Planet(props: {
-  texture: string, 
-  mesh: ThreeElements['mesh'], 
-  position: [number, number, number], 
-  onClick: () => void, 
-  planetCount: number,
-  setPlanetCount: React.Dispatch<React.SetStateAction<number>>
-}) {
-    const ref = useRef<THREE.Mesh>(null!)
+// function Planet(props: {
+//   texture: string, 
+//   mesh: ThreeElements['mesh'], 
+//   position: [number, number, number], 
+//   onClick: () => void, 
+//   planetCount: number,
+//   setPlanetCount: React.Dispatch<React.SetStateAction<number>>
+// }) {
+//     const ref = useRef<THREE.Mesh>(null!)
+// }
 
 
 const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
@@ -26,10 +27,22 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
     useFrame((state, delta) => {
       ref.current.rotation.x += delta
       ref.current.rotation.y += delta
-    }
+      }
     )
 
-    const texture = new THREE.TextureLoader().load(props.texture);
+      
+    const handleRemovePlanet = (index: number) =>  {
+      if (index === -1) return
+      console.log(index)
+      let newPlanets: PlanetData[] = []
+      for (let i = 0; i < planetData.planets.length; i++) {
+        if (i === index) continue
+        newPlanets.push(planetData.planets[i])
+      }
+      planetData.setPlanets(newPlanets)
+    };
+
+    const texture = new THREE.TextureLoader().load(planetData.texture);
 
     return (
 
@@ -38,9 +51,7 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
         visible={planetData.show}
         ref={ref}
         scale={1}
-        onClick={(event) => click(!clicked)}
-        onPointerOver={(event) => hover(true)}
-        onPointerOut={(event) => hover(false)}>
+        onClick={() => {handleRemovePlanet(planetData.planets.findIndex((i) => (i.planetName === planetData.planetName)))}}>
         <sphereGeometry args={[planetData.radius]} />
         <meshStandardMaterial map={texture} />
       </mesh>
@@ -48,47 +59,46 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
     )
   }
 
-export default function ThreePlanets(props: {
-  planetCount: number,
-  setPlanetCount: React.Dispatch<React.SetStateAction<number>>
-  visiblePlanets: { texture: string, isVisible: boolean }[]
-  setVisiblePlanets: React.Dispatch<React.SetStateAction<{ texture: string, isVisible: boolean }[]>>
-}) {
+export default Planet;
 
-  // const [planetCount, setPlanetCount] = useState(3);
+// export default function ThreePlanets(props: {
+//   planetCount: number,
+//   setPlanetCount: React.Dispatch<React.SetStateAction<number>>
+//   visiblePlanets: { texture: string, isVisible: boolean }[]
+//   setVisiblePlanets: React.Dispatch<React.SetStateAction<{ texture: string, isVisible: boolean }[]>>
+// }) {
 
-  const handleAddPlanet = (planetTexture: string) => {
-    props.setVisiblePlanets([...props.visiblePlanets, {texture: planetTexture, isVisible: true}]);
-    props.setPlanetCount(prevPlanetCount => prevPlanetCount + 1);
-    console.log("Planet count: ", props.planetCount);
-  };
+//   // const [planetCount, setPlanetCount] = useState(3);
+
+//   const handleAddPlanet = (planetTexture: string) => {
+//     props.setVisiblePlanets([...props.visiblePlanets, {texture: planetTexture, isVisible: true}]);
+//     props.setPlanetCount(prevPlanetCount => prevPlanetCount + 1);
+//     console.log("Planet count: ", props.planetCount);
+//   };
   
-  // const handleClick = (index: number) =>  {
-  //   setVisiblePlanets(prevVisiblePlanets => {
-  //       const newVisiblePlanets = [...prevVisiblePlanets];
-  //       newVisiblePlanets[index].isVisible = false;
-  //       setPlanetCount(planetCount => planetCount - 1);
-  //       return newVisiblePlanets;
-  //   });
-  //   setPlanetCount(planetCount => planetCount - 1);
-  //   console.log("Planet count: ", planetCount);
-  // };
+//   // const handleClick = (index: number) =>  {
+//   //   setVisiblePlanets(prevVisiblePlanets => {
+//   //       const newVisiblePlanets = [...prevVisiblePlanets];
+//   //       newVisiblePlanets[index].isVisible = false;
+//   //       setPlanetCount(planetCount => planetCount - 1);
+//   //       return newVisiblePlanets;
+//   //   });
+//   //   setPlanetCount(planetCount => planetCount - 1);
+//   //   console.log("Planet count: ", planetCount);
+//   // };
 
-  return (
-  <>
-    {/* <div>Number of planets: {planetCount}</div> */}
-     {props.visiblePlanets.map((planet, index) => 
-      planet.isVisible && 
-      <Planet 
-        key={index} 
-        mesh={{}} 
-        position={[index * 10, 0, 0]} 
-        texture={planet.texture} 
-        onClick={() => handleAddPlanet(planet.texture)} 
-        planetCount={props.planetCount} 
-        setPlanetCount={props.setPlanetCount}
-      />
-    )}
-  </>
-  );
-}
+//   return (
+//   <>
+//     {/* <div>Number of planets: {planetCount}</div>
+//      {props.visiblePlanets.map((planet, index) => 
+//       planet.isVisible && 
+//       <Planet 
+//         key={index} 
+//         onClick={() => handleAddPlanet(planet.texture)} 
+//         planetCount={props.planetCount} 
+//         setPlanetCount={props.setPlanetCount}
+//       />
+//     )} */}
+//   </>
+//   );
+// }

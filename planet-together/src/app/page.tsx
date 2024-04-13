@@ -1,10 +1,10 @@
 "use client"
 import * as THREE from 'three'
 import { createRoot } from 'react-dom/client'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Plane } from '@react-three/drei'
-import Planet from './components/Planet'
+
 import System from './components/System'
 import Sidebar from './components/Sidebar'
 import Stars from './components/Stars'
@@ -15,8 +15,11 @@ export interface PlanetData {
   mass: number,
   velocity: THREE.Vector3,
   next_velocity: THREE.Vector3,
+  texture: string,
   radius: number,
   show: boolean,
+  planets: PlanetData[],
+  setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>,
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
 
@@ -30,9 +33,14 @@ export default function Home() {
   
   const [isOrbit, setIsOrbit] = useState(true)
 
-  const [planetCount, setPlanetCount] = useState(3);
+  const [planetCount, setPlanetCount] = useState(0);
 
   const [planets, setPlanets] = useState<PlanetData[]>([])
+
+  useEffect(() => {
+    setPlanetCount(planets.length);
+  }, [planets])
+
 //         <ThreePlanets setPlanetCount={setPlanetCount} planetCount={planetCount} setVisiblePlanets={setVisiblePlanets} visiblePlanets={visiblePlanets}/>
 
   return (

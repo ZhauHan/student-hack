@@ -11,28 +11,33 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
   const G = 6.67 * 10 ** (-11)
   const ratio = 1e-30
   const period = 60
-  
-
+      
   const planet1: PlanetData = {
     planetName: "planet1",
     position: new THREE.Vector3(0, 2, 0),
     mass: 1.285e24,
     velocity: new THREE.Vector3(1000, 0, -2000),
     next_velocity: new THREE.Vector3(1, 0, 0),
+    texture: 'images/ear0xuu2.jpg',
     radius: 0.3,
     show: true,
     ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
   };
 
   const planet2: PlanetData = {
     planetName: "planet2",
     position: new THREE.Vector3(4, 0, 0),
     mass: 3.285e23,
-    velocity: new THREE.Vector3(-1000, 4000, 0),
+    velocity: new THREE.Vector3(-1000, 2000, 0),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
+    texture: 'images/sat0fds1.jpg',
     radius: 0.3,
     show: true,
     ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
   };
 
   const planet3: PlanetData = {
@@ -41,9 +46,12 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     mass: 3.285e23,
     velocity: new THREE.Vector3(2500, -7000, 3000),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
+    texture: 'images/mar2kuu2.jpg',
     radius: 0.1,
     show: true,
     ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
   };
 
   const planet4: PlanetData = {
@@ -52,16 +60,20 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     mass: 3e23,
     velocity: new THREE.Vector3(2500,7000,-3000),
     next_velocity: new THREE.Vector3(0,0,0),
+    texture: 'images/moon.jpg',
     radius: 0.1,
     show: true,
     ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
 
   }
   const [tempRemove, setTempRemove] = useState<number[] >([]);
 
-  useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3,planet4])}, [])
-  
-  const useDidMountEffect = (func: any, deps: any) => {
+  useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3,planet4])
+  }, [])
+  props.planets.map((planet) => {planet.planets = props.planets})
+    const useDidMountEffect = (func: any, deps: any) => {
     const didMount = useRef(false);
     useEffect(() => {
       if (didMount.current) func();
@@ -114,6 +126,7 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     //   } newPlanets.push(props.planets[i])
     // }
     // props.setPlanets(newPlanets);
+
     if (removal) {
       let newPlanets: PlanetData[] = []
       for (let i = 0; i < props.planets.length; i++) {
@@ -143,6 +156,8 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     //   props.setPlanets(newPlanets)
     // }, [tempRemove])
     
+
+
 
   return (
     <>
