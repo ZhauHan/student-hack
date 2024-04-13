@@ -12,18 +12,20 @@ import Stars from './components/Stars'
 export default function Home() {
   const [isOrbit, setIsOrbit] = useState(false)
   return (
-    <main className="bg-zinc-800 h-dvh">
-      <div className="text-amber-200 p-5 text-xl font-bold">Welcome to Planet Together!</div>
-      <button onClick={() => {setIsOrbit(!isOrbit)}}>Change Camera Mode</button>
-      <Canvas>
-        <ambientLight intensity={Math.PI / 2} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <System />
-        <OrbitControls zoom0={0.5} enabled={isOrbit}/>
-        <Stars />
-      </Canvas>
-    </main >
+    <main className="bg-zinc-800 h-screen">
+      <div className="flex h-screen">
+        <button onClick={() => {setIsOrbit(!isOrbit)}}>Change Camera Mode</button>
+        <Sidebar />
+        <Canvas>
+          <ambientLight intensity={Math.PI / 2} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+          <System />
+          <OrbitControls zoom0={0.5} enabled={isOrbit}/>
+          <Stars />
+        </Canvas>
+      </div>
+    </main>
   );
 }
 
