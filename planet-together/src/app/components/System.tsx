@@ -23,8 +23,8 @@ export default function System(props: ThreeElements['mesh']) {
   const planet1: PlanetData = {
     planetName: "planet1",
     position: new THREE.Vector3(0, 0, 0),
-    mass: 3.285e23,
-    velocity: new THREE.Vector3(0, 3000, 0),
+    mass: 3.285e24,
+    velocity: new THREE.Vector3(0, 1000, 0),
     next_velocity: new THREE.Vector3(1, 0, 0),
     ref: useRef<THREE.Mesh>(null!),
   };
@@ -33,7 +33,7 @@ export default function System(props: ThreeElements['mesh']) {
     planetName: "planet2",
     position: new THREE.Vector3(1.5, 0, 0),
     mass: 3.285e23,
-    velocity: new THREE.Vector3(0, -3000, 0),
+    velocity: new THREE.Vector3(0, -10000, 0),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
     ref: useRef<THREE.Mesh>(null!),
   };
@@ -42,7 +42,7 @@ export default function System(props: ThreeElements['mesh']) {
     planetName: "planet3",
     position: new THREE.Vector3(-1.5, 1, 0),
     mass: 3.285e23,
-    velocity: new THREE.Vector3(2500, -3000, 3000),
+    velocity: new THREE.Vector3(2500, -7000, 3000),
     next_velocity: new THREE.Vector3(0, -1000000, 0),
     ref: useRef<THREE.Mesh>(null!),
   };
