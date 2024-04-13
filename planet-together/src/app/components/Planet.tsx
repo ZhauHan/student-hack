@@ -35,6 +35,7 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
 
       <mesh
         {...planetData}
+        visible={planetData.show}
         ref={ref}
         scale={1}
         onClick={(event) => click(!clicked)}

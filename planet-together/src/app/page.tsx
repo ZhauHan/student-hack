@@ -26,8 +26,10 @@ export default function Home() {
     { texture: 'images/ear0xuu2.jpg', isVisible: true },
   ]);
   
+  const [isOrbit, setIsOrbit] = useState(true)
+
   const [planetCount, setPlanetCount] = useState(3);
-  const [isOrbit, setIsOrbit] = useState(false)
+
   const [planets, setPlanets] = useState<PlanetData[]>([])
 //         <ThreePlanets setPlanetCount={setPlanetCount} planetCount={planetCount} setVisiblePlanets={setVisiblePlanets} visiblePlanets={visiblePlanets}/>
 
