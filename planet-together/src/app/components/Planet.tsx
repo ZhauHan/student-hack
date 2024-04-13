@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import { Html } from "@react-three/drei"
+import type { PlanetData } from '../page'
 
 function Planet(props: {
   texture: string, 
@@ -13,9 +14,15 @@ function Planet(props: {
   setPlanetCount: React.Dispatch<React.SetStateAction<number>>
 }) {
     const ref = useRef<THREE.Mesh>(null!)
+
+
+const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
+
+    const ref = planetData.ref;
+
     const [hovered, hover] = useState(false)
     const [clicked, click] = useState(false)
-    
+
     useFrame((state, delta) => {
       ref.current.rotation.x += delta
       ref.current.rotation.y += delta
@@ -27,13 +34,13 @@ function Planet(props: {
     return (
 
       <mesh
-        {...props}
+        {...planetData}
         ref={ref}
         scale={1}
-        onClick={props.onClick}
+        onClick={(event) => click(!clicked)}
         onPointerOver={(event) => hover(true)}
         onPointerOut={(event) => hover(false)}>
-        <sphereGeometry args={[1]} />
+        <sphereGeometry args={[planetData.radius]} />
         <meshStandardMaterial map={texture} />
       </mesh>
 
