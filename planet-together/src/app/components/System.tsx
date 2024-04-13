@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import React, { useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Planet from './Planet'
+import { PlanetData } from '../page'
+
 
 export interface PlanetData {
   planetName: String
@@ -15,12 +17,13 @@ export interface PlanetData {
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
 
-export default function System(props: ThreeElements['mesh']) {
+
+export default function System(props: {setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>, planets: PlanetData[]}) {
 
   const G = 6.67 * 10 ** (-11)
   const ratio = 1e-30
   const period = 3600
-  const [planets, setPlanets] = useState<PlanetData[]>([])
+  
 
   const planet1: PlanetData = {
     planetName: "planet1",
@@ -56,14 +59,14 @@ export default function System(props: ThreeElements['mesh']) {
   };
 
 
-  useEffect(() => {setPlanets([...planets, planet1, planet2, planet3])}, [])
+  useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3])}, [])
 
   useFrame((state, delta) => {
 
-    planets.forEach((currPlanet) => {
+    props.planets.forEach((currPlanet) => {
       console.log(currPlanet.velocity)
       const acceleration = new THREE.Vector3(0, 0, 0)
-      planets.forEach((otherPlanet) => {
+      props.planets.forEach((otherPlanet) => {
         if (otherPlanet.planetName !== currPlanet.planetName) {
 
           const direction = new THREE.Vector3().subVectors(otherPlanet.position, currPlanet.position).multiplyScalar(1000000);
@@ -76,6 +79,7 @@ export default function System(props: ThreeElements['mesh']) {
           distance.copy(direction)
           
           if (distance.length() < 0.0001) {
+
             acceleration.copy(new THREE.Vector3(0,0,0))
             currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
             currPlanet.show = false;
@@ -93,14 +97,14 @@ export default function System(props: ThreeElements['mesh']) {
       
     });
 
-    planets.forEach((planet) => {
+    props.planets.forEach((planet) => {
       planet.ref.current.position.copy(planet.position)
     })
     })
 
   return (
     <>
-      {planets.map((planetData: PlanetData, index: number) => (<Planet key={index} planetData={planetData}/>))}
+      {props.planets.map((planetData: PlanetData, index: number) => (<Planet key={index} planetData={planetData}/>))}
     </>
   )
 }

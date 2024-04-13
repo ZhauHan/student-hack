@@ -27,11 +27,7 @@ function Sidebar() {
     <div className="sidebar w-160 border border-black flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200">
       <div className="text-amber-200 p-5 text-xl font-bold">Planet Together</div>
       <Card title="Moon" description="This is the first card." image="images/moon.jpg" />
-      <Card title="Moon" description="This is the first card." image="planet-together\public\images\moon.jpg" />
-      <Card title="Moon" description="This is the first card." image="images/moon.jpg" />
-      <Card title="Moon" description="This is the first card." image="planet-together\public\images\moon.jpg" />
-      <img src="./moon.jpg" alt="moon" />
-      
+      <Card title="Mars" description="This is the second card." image="images/mars.jpg" />
     </div>
   );
 }
