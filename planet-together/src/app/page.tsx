@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import Planet from './components/Planet'
+import System from './components/System'
 
 export default function Home() {
   return (
@@ -14,8 +15,8 @@ export default function Home() {
         <ambientLight intensity={Math.PI / 2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <Planet position={[0, 0, 0]} />
-        <OrbitControls />
+        <System />
+        <OrbitControls zoom0={0.5}/>
       </Canvas>,
     </main >
   );
