@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import React, { useRef, useState } from 'react'
 import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
-import type { PlanetData } from './System'
+import type { PlanetData } from '../page'
 
 
 const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
