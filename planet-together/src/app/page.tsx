@@ -15,9 +15,10 @@ export interface PlanetData {
   mass: number,
   velocity: THREE.Vector3,
   next_velocity: THREE.Vector3,
+  radius: number,
+  show: boolean,
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
-
 export default function Home() {
   
   const [isOrbit, setIsOrbit] = useState(false)

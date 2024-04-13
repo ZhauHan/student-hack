@@ -5,19 +5,6 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Planet from './Planet'
 import { PlanetData } from '../page'
 
-
-export interface PlanetData {
-  planetName: String
-  position: THREE.Vector3,
-  mass: number,
-  velocity: THREE.Vector3,
-  next_velocity: THREE.Vector3,
-  radius: number,
-  show: boolean,
-  ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
-}
-
-
 export default function System(props: {setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>, planets: PlanetData[]}) {
 
   const G = 6.67 * 10 ** (-11)
