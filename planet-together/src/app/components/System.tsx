@@ -5,6 +5,7 @@ import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 import Planet from './Planet'
 
 export interface PlanetData {
+  planetName: String
   position: THREE.Vector3,
   mass: number,
   velocity: THREE.Vector3,
@@ -15,62 +16,79 @@ export interface PlanetData {
 export default function System(props: ThreeElements['mesh']) {
 
   const G = 6.67 * 10 ** (-11)
-  const ratio = 10 ^ (-8)
+  const ratio = 1e-30
   const period = 3600
+  const [planets, setPlanets] = useState<PlanetData[]>([])
 
   const planet1: PlanetData = {
-    position: new THREE.Vector3(1, 0.1, 0.1),
-    mass: 1000000,
-    velocity: new THREE.Vector3(1, 1, 1),
-    next_velocity: new THREE.Vector3(0, 0, 0),
+    planetName: "planet1",
+    position: new THREE.Vector3(0, 0, 0),
+    mass: 3.285e23,
+    velocity: new THREE.Vector3(0, 3000, 0),
+    next_velocity: new THREE.Vector3(1, 0, 0),
     ref: useRef<THREE.Mesh>(null!),
-  }
+  };
 
   const planet2: PlanetData = {
-    position: new THREE.Vector3(-1, 0.1, 0.1),
-    mass: 1000000,
-    velocity: new THREE.Vector3(1, 1, 1),
-    next_velocity: new THREE.Vector3(0, 0, 0),
+    planetName: "planet2",
+    position: new THREE.Vector3(1.5, 0, 0),
+    mass: 3.285e23,
+    velocity: new THREE.Vector3(0, -3000, 0),
+    next_velocity: new THREE.Vector3(0, -1000000, 0),
     ref: useRef<THREE.Mesh>(null!),
-  }
+  };
 
-  const [planets, setPlanets] = useState<PlanetData[]>([])
+  const planet3: PlanetData = {
+    planetName: "planet3",
+    position: new THREE.Vector3(-1.5, 1, 0),
+    mass: 3.285e23,
+    velocity: new THREE.Vector3(2500, -3000, 3000),
+    next_velocity: new THREE.Vector3(0, -1000000, 0),
+    ref: useRef<THREE.Mesh>(null!),
+  };
+
+
+  useEffect(() => {setPlanets([...planets, planet1, planet2, planet3])}, [])
 
   useFrame((state, delta) => {
 
+    planets.forEach((currPlanet) => {
+      console.log(currPlanet.velocity)
+      const acceleration = new THREE.Vector3(0, 0, 0)
+      planets.forEach((otherPlanet) => {
+        if (otherPlanet.planetName !== currPlanet.planetName) {
 
-    planets.forEach((planet_a) => {
+          const direction = new THREE.Vector3().subVectors(otherPlanet.position, currPlanet.position).multiplyScalar(1000000);
+          const distanceSquared = direction.lengthSq();
+          const forceMagnitude = (G * currPlanet.mass * otherPlanet.mass) / distanceSquared;
+          const force = direction.normalize().multiplyScalar(forceMagnitude);
+          
+          acceleration.add(force.divideScalar(currPlanet.mass));
+          if (distanceSquared < 1000000*1000000/5) {
+            acceleration.copy(new THREE.Vector3(0,0,0))
+            currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
+            return
+          }
+        }
+      });
+      currPlanet.velocity.add(acceleration);
+      const scaledVelocity = new THREE.Vector3();
+      scaledVelocity.copy(currPlanet.velocity);
+      scaledVelocity.divideScalar(1000000);
+      currPlanet.position.add(scaledVelocity);
 
-      let force_vector = new THREE.Vector3(0, 0, 0)
-
-      planets.forEach((planet_b) => {
-          if (planet_a === planet_b) return
-
-          const numerator = new THREE.Vector3(G * planet_a.mass * planet_b.mass, G * planet_a.mass * planet_b.mass, G * planet_a.mass * planet_b.mass)
-          //const denominator = planet_a.position.add(planet_b.position.multiplyScalar(-1)).multiply(planet_a.position.add(planet_b.position.multiplyScalar(-1)))
-          const denominator = planet_a.position.distanceToSquared(planet_b.position);
-          if (denominator === 0) return 
-          force_vector.add(numerator.divideScalar(denominator))
-
-        })
       
-      const acceleration = force_vector.multiplyScalar(1/planet_a.mass)
-      planet_a.next_velocity.add(acceleration.multiplyScalar(ratio))
-      
-      })
+    });
 
     planets.forEach((planet) => {
-      planet.position.add(planet.next_velocity)
-      planet.velocity = planet.next_velocity
-      planet.ref.current.position.set(planet.position.x, planet.position.y, planet.position.z);
+      planet.ref.current.position.copy(planet.position)
+      console.log(planet.position)
     })
-    }
-  )
-  
-  useEffect(() => {setPlanets([...planets, planet1, planet2])}, [1])
+    })
+
   return (
     <>
-      {planets.map((planetData: PlanetData) => (<Planet planetData={planetData}/>))}
+      {planets.map((planetData: PlanetData, index: number) => (<Planet key={index} planetData={planetData}/>))}
     </>
   )
 }
