@@ -2,8 +2,9 @@
 import * as THREE from 'three'
 import { createRoot } from 'react-dom/client'
 import React, { useRef, useState, useEffect } from 'react'
-import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { OrbitControls, Plane } from '@react-three/drei'
+
 import System from './components/System'
 import Sidebar from './components/Sidebar'
 import Stars from './components/Stars'
@@ -21,6 +22,8 @@ export interface PlanetData {
   setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>,
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
+
+
 export default function Home() {
   const [visiblePlanets, setVisiblePlanets] = useState([
     { texture: 'images/sat0fds1.jpg', isVisible: true },
@@ -42,14 +45,8 @@ export default function Home() {
 
   return (
     <main className="bg-zinc-800 h-screen">
-      <div className="flex h-screen">
-        <div className="text-amber-200 p-5 text-xl font-bold">Welcome to Planet Together!</div>
-
-        <button onClick={() => {setIsOrbit(!isOrbit)}}>Change Camera Mode</button>
-        <div>
-          <p style={{ color: 'red' }}> Current planet count: {planetCount}</p>
-        </div>
-        <Sidebar />
+      <div className="flex h-full">
+        <Sidebar setIsOrbit={ setIsOrbit }/>
         <Canvas>
           <ambientLight intensity={Math.PI / 2} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
