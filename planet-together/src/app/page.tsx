@@ -21,7 +21,7 @@ export interface PlanetData {
 }
 export default function Home() {
   
-  const [isOrbit, setIsOrbit] = useState(false)
+  const [isOrbit, setIsOrbit] = useState(true)
   const [planets, setPlanets] = useState<PlanetData[]>([])
 
   return (
