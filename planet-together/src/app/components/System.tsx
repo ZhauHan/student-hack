@@ -102,11 +102,13 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
 
               if (distance < otherPlanet.radius + currPlanet.radius) {
 
-                currPlanet.show = false;
-                setTempRemove([...tempRemove, index]);
-                acceleration.copy(new THREE.Vector3(0,0,0))
-                currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
-
+                //currPlanet.show = false;
+                //setTempRemove([...tempRemove, index]);
+                //acceleration.copy(new THREE.Vector3(0,0,0))
+                //currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
+                if (!currPlanet.ref.current) return
+                if (!currPlanet.ref.current.parent) return
+                currPlanet.ref!.current!.parent.remove(currPlanet.ref!.current!)
                 removalArray.push(currPlanet)
                 removalArray.push(otherPlanet)
                 removal = true
