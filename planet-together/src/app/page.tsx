@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Plane } from '@react-three/drei'
+import { MeshBasicMaterial } from 'three'
 
 import System from './components/System'
 import Sidebar from './components/Sidebar'
@@ -79,7 +80,7 @@ const MovingGrid = () => {
 
   return (
     <>
-      <gridHelper ref={gridRef} args={[500,500]} />
+      <gridHelper ref={gridRef} args={[250,50]} />
     </>
   )
 }
