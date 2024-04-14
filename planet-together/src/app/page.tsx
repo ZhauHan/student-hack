@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import React, { useRef, useState, useEffect, createRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Plane } from '@react-three/drei'
+import { MeshBasicMaterial } from 'three'
 
 import System from './components/System'
 import Sidebar from './components/Sidebar'
@@ -101,7 +102,7 @@ const MovingGrid = (props: { planets:PlanetData[], setPlanets: React.Dispatch<Re
 
   return (
     <>
-      <gridHelper ref={gridRef} args={[500,500]} />
+      <gridHelper ref={gridRef} args={[250,50]} />
     </>
   )
 }
@@ -109,9 +110,9 @@ const MovingGrid = (props: { planets:PlanetData[], setPlanets: React.Dispatch<Re
 
 export default function Home() {
   const [visiblePlanets, setVisiblePlanets] = useState([
-    { texture: 'images/sat0fds1.jpg', isVisible: true },
-    { texture: 'images/mar2kuu2.jpg', isVisible: true },
-    { texture: 'images/ear0xuu2.jpg', isVisible: true },
+    { name: 'Saturn', texture: 'images/sat0fds1.jpg', isVisible: true },
+    { name: 'Mars', texture: 'images/mar2kuu2.jpg', isVisible: true },
+    { name: 'Earth', texture: 'images/ear0xuu2.jpg', isVisible: true },
   ]);
   
   const [isOrbit, setIsOrbit] = useState(true)
@@ -133,9 +134,10 @@ export default function Home() {
 
   return (
     <main className="bg-zinc-800 h-screen">
+
       <div className="flex h-full">
 
-        <Sidebar setIsOrbit={ setIsOrbit } isOrbit={ isOrbit } planetCount={ planetCount } setIsAdding={ setIsAdding } isAdding={ isAdding }/>
+        <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={ setIsOrbit } isOrbit={ isOrbit } planetCount={ planetCount } setIsAdding={ setIsAdding } isAdding={ isAdding }/>
         <div className="flex flex-col grow h-full">
           <Canvas className="w-max h-max">
             <ambientLight intensity={Math.PI / 2} />
