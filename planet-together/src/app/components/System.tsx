@@ -15,9 +15,9 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
       
   const planet1: PlanetData = {
     planetName: "planet1",
-    position: new THREE.Vector3(0, 2, 0),
+    position: new THREE.Vector3(0, 0, 0),
     mass: 1.285e24,
-    velocity: new THREE.Vector3(1000, 0, -2000),
+    velocity: new THREE.Vector3(0, 0, 0),
     texture: 'images/ear0xuu2.jpg',
     radius: 0.3,
     show: true,
@@ -65,9 +65,52 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     setPlanets: props.setPlanets,
 
   }
-  const [tempRemove, setTempRemove] = useState<number[] >([]);
 
-  useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3,planet4])
+  // useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3,planet4])
+  // }, [])
+
+  const planet5: PlanetData = {
+    planetName: "planet5",
+    position: new THREE.Vector3(-5,0, 0),
+    mass: 3e23,
+    velocity: new THREE.Vector3(0,1000,0),
+    texture: 'images/moon.jpg',
+    radius: 0.1,
+    show: true,
+    ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
+
+  }
+
+  const planet6: PlanetData = {
+    planetName: "planet6",
+    position: new THREE.Vector3(0,5,0),
+    mass: 3e23,
+    velocity: new THREE.Vector3(-1000,0,0),
+    texture: 'images/moon.jpg',
+    radius: 0.1,
+    show: true,
+    ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
+
+  }
+
+  const planet7: PlanetData = {
+    planetName: "planet7",
+    position: new THREE.Vector3(5,0,1),
+    mass: 3e23,
+    velocity: new THREE.Vector3(-1000,0,0),
+    texture: 'images/moon.jpg',
+    radius: 0.1,
+    show: true,
+    ref: useRef<THREE.Mesh>(null!),
+    planets: props.planets,
+    setPlanets: props.setPlanets,
+
+  }
+  useEffect(() => {props.setPlanets([...props.planets, planet1, planet5, planet6, planet7])
   }, [])
   props.planets.map((planet) => {planet.planets = props.planets})
     const useDidMountEffect = (func: any, deps: any) => {

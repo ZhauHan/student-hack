@@ -134,18 +134,23 @@ export default function Home() {
 
   return (
     <main className="bg-zinc-800 h-screen">
-      <div className="flex flex-col h-full">
-        <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={setIsOrbit} isOrbit={ isOrbit } planetCount={ planetCount }/>
-        <Canvas className="w-max h-max">
-          <ambientLight intensity={Math.PI / 2} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-          <System setPlanets={setPlanets} planets={planets} updateFreq={updateFreq}/>
-          <OrbitControls zoom0={0.5} enabled={isOrbit}/>
-          { stars }
-        </Canvas>
-        <div className="flex justify-center">
-          <SpeedScrollBar setUpdateFreq={setUpdateFreq} />
+
+      <div className="flex h-full">
+
+        <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={ setIsOrbit } isOrbit={ isOrbit } planetCount={ planetCount } setIsAdding={ setIsAdding } isAdding={ isAdding }/>
+        <div className="flex flex-col grow h-full">
+          <Canvas className="w-max h-max">
+            <ambientLight intensity={Math.PI / 2} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <System setPlanets={setPlanets} planets={planets} updateFreq={updateFreq}/>
+            <OrbitControls zoom0={0.5} enabled={isOrbit}/>
+            { stars }
+            <MovingGrid planets={planets} setPlanets={setPlanets} isAdding={ isAdding }/>
+          </Canvas>
+          <div className="flex justify-center">
+            <SpeedScrollBar setUpdateFreq={setUpdateFreq} />
+          </div>
         </div>
       </div>
     </main>
