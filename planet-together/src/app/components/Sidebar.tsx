@@ -118,18 +118,6 @@ export default function Sidebar(props: {setIsOrbit: React.Dispatch<React.SetStat
             ...provided,
             color: 'white',
           }),
-      options={props.visiblePlanets.map(planet => ({ value: planet.name, label: planet.name }))}
-      styles={{
-        ...customStyles,
-        container: (provided: any) => ({
-          ...provided,
-          marginTop: '320px',
-        }),
-        menu: (provided: any) => ({
-          ...provided,
-          backgroundColor: 'transparent', 
-          color: 'white'
-        }),
       }}      
       isSearchable={false}
       placeholder="Current Planets"

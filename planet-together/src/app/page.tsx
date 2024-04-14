@@ -135,7 +135,7 @@ export default function Home() {
   return (
     <main className="bg-zinc-800 h-screen">
       <div className="flex flex-col h-full">
-        <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={setIsOrbit} isOrbit={ isOrbit } planetCount={ planetCount }/>
+      <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={setIsOrbit} isOrbit={isOrbit} planetCount={planetCount} setIsAdding={setIsAdding} isAdding={isAdding} />
         <Canvas className="w-max h-max">
           <ambientLight intensity={Math.PI / 2} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
