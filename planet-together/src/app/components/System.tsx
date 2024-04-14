@@ -42,7 +42,7 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
   const planet3: PlanetData = {
     planetName: "planet3",
     position: new THREE.Vector3(-1.5, 1, 0),
-    mass: 3.285e23,
+    mass: 2.5e23,
     velocity: new THREE.Vector3(2500, -7000, 3000),
     texture: 'images/mar2kuu2.jpg',
     radius: 0.1,
@@ -55,7 +55,7 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
   const planet4: PlanetData = {
     planetName: "planet4",
     position: new THREE.Vector3(0,1,5),
-    mass: 3e23,
+    mass: 2.5e23,
     velocity: new THREE.Vector3(2500,7000,-3000),
     texture: 'images/moon.jpg',
     radius: 0.1,
@@ -110,7 +110,7 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     setPlanets: props.setPlanets,
 
   }
-  useEffect(() => {props.setPlanets([...props.planets, planet1, planet5, planet6, planet7])
+  useEffect(() => {props.setPlanets([...props.planets, planet1, planet2, planet3, planet4])
   }, [])
   props.planets.map((planet) => {planet.planets = props.planets})
     const useDidMountEffect = (func: any, deps: any) => {
