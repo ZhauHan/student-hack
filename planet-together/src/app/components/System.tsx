@@ -1,17 +1,22 @@
 "use client"
 import * as THREE from 'three'
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
-import { Canvas, useFrame, ThreeElements, dispose } from '@react-three/fiber'
+import { Canvas, useFrame, ThreeElements, dispose, useThree } from '@react-three/fiber'
 import Planet from './Planet'
 import { PlanetData } from '../page'
 import { Line } from '@react-three/drei'
 import { SliderValue } from '@nextui-org/react'
+import { ArrowHelper } from 'three'
 
 export default function System(props: {setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>, planets: PlanetData[], updateFreq: SliderValue}) {
 
   const G = 6.67 * 10 ** (-11)
   const ratio = 1e-30
   const period = 60
+
+  let arrowHelpers: ArrowHelper[] = []
+
+  const { scene } = useThree()
       
   const planet1: PlanetData = {
     planetName: "planet1",
@@ -75,8 +80,13 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
     useEffect(() => {
       if (didMount.current) func();
       else didMount.current = true;}, deps);
+  
     }
-
+  props.planets.forEach((currPlanet: { position: THREE.Vector3 | undefined }, index: number)=> {
+    const arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), currPlanet.position, 0, 0xff0000)
+    scene.add(arrowHelper)
+    arrowHelpers[index] = arrowHelper
+  })
   const updateFrequency = Math.E ** -props.updateFreq; // Update every 0.1 seconds
   let lastUpdate = Date.now();
   useFrame((state, delta) => {
@@ -99,7 +109,7 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
               
               acceleration.add(force.divideScalar(currPlanet.mass));
               const distance = currPlanet.position.distanceTo(otherPlanet.position);
-
+              
               if (distance < otherPlanet.radius + currPlanet.radius) {
 
                 currPlanet.show = false;
@@ -112,8 +122,23 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
                 removal = true
                 return
               }
+
+              if (!currPlanet) {
+                const arrowHelper = arrowHelpers[index]
+                if (arrowHelper) {
+                  scene.remove(arrowHelper)
+                }
+                return
+              }
             }
           });
+            // Create an arrow helper to visualize the force
+            const arrowHelper = arrowHelpers[index]
+            arrowHelper.position.copy(currPlanet.position)
+            arrowHelper.setDirection(acceleration)
+            arrowHelper.setLength(acceleration.length()/5)
+
+
             currPlanet.velocity.add(acceleration);
             const scaledVelocity = new THREE.Vector3();
             scaledVelocity.copy(currPlanet.velocity);
