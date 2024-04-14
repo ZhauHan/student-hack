@@ -59,7 +59,7 @@ const customStyles = {
 };
 
 
-export default function Sidebar(props: {setIsOrbit: (isOrbit: boolean) => void, visiblePlanets: { name: string, texture: string, isVisible: boolean }[] }) {
+export default function Sidebar(props: {setIsOrbit: (isOrbit: boolean) => void, isOrbit: boolean , planetCount: number, visiblePlanets: { name: string, texture: string, isVisible: boolean }[] }) {
   return (
     <div className="sidebar w-200 border border-black flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200">
       <div className="text-amber-200 p-5 text-xl font-bold">Planet Together</div>
