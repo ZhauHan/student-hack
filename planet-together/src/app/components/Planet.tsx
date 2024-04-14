@@ -17,7 +17,6 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
       ref.current.rotation.y += delta
       }
     )
-
       
     const handleRemovePlanet = (index: number) =>  {
       if (index === -1) return
