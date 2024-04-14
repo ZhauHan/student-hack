@@ -13,8 +13,8 @@ const Planet: React.FC<{ planetData: PlanetData }> = ({ planetData }) => {
     const [clicked, click] = useState(false)
 
     useFrame((state, delta) => {
-      ref.current.rotation.x += delta
-      ref.current.rotation.y += delta
+      ref.current!.rotation.x += delta
+      ref.current!.rotation.y += delta
       }
     )
 

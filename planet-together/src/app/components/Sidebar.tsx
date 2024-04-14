@@ -24,6 +24,7 @@ function Card({ title , description, image } : CardProps) {
   );
 }
 
+
 const planets: CardProps[] = [
   { title: "Venus", description: "This is the first card.", image: "images/ven0aaa2.jpg" },
   { title: "Earth", description: "This is the second card.", image: "images/ear0xuu2.jpg" },
@@ -58,12 +59,13 @@ const customStyles = {
 };
 
 
-export default function Sidebar(props: {setIsOrbit: (isOrbit: boolean) => void, isOrbit: boolean , planetCount: number, visiblePlanets: { name: string, texture: string, isVisible: boolean }[] }) {
+export default function Sidebar(props: {setIsOrbit: React.Dispatch<React.SetStateAction<boolean>>, isOrbit: boolean, planetCount: number, setIsAdding: React.Dispatch<React.SetStateAction<boolean>>, isAdding: boolean , visiblePlanets: { name: string, texture: string, isVisible: boolean }[] }) {
   return (
     <div className="sidebar w-200 border border-black flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 h-[700px]">
       <div className="text-amber-200 p-5 text-xl font-bold">Planet Together</div>
       <button className="m-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 active:bg-blue-800 focus:outline-none" onClick={() => { props.setIsOrbit }}>Change Camera Mode</button>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div className="text-amber-200 p-5 text-xl font-bold">Planet Count: {props.planetCount}</div>
       <Select 
         options={planets} 
         components={{
@@ -116,6 +118,18 @@ export default function Sidebar(props: {setIsOrbit: (isOrbit: boolean) => void, 
             ...provided,
             color: 'white',
           }),
+      options={props.visiblePlanets.map(planet => ({ value: planet.name, label: planet.name }))}
+      styles={{
+        ...customStyles,
+        container: (provided: any) => ({
+          ...provided,
+          marginTop: '320px',
+        }),
+        menu: (provided: any) => ({
+          ...provided,
+          backgroundColor: 'transparent', 
+          color: 'white'
+        }),
       }}      
       isSearchable={false}
       placeholder="Current Planets"
