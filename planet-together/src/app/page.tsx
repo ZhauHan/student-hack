@@ -23,6 +23,67 @@ export interface PlanetData {
   ref: React.MutableRefObject<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material | THREE.Material[], THREE.Object3DEventMap>>,
 }
 
+const MovingGrid = () => {
+  const gridRef = useRef<THREE.GridHelper>(null)
+
+  const { raycaster, mouse, camera, scene } = useThree()
+
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      raycaster.setFromCamera(mouse, camera)
+      const intersects = raycaster.intersectObject(gridRef.current!)
+      if (intersects.length > 0) {
+        const intersect = intersects[0]
+        console.log(intersect.point)
+      }
+    }
+    const canvas = document.querySelector('canvas')
+    if (canvas) {
+      canvas.addEventListener('mousedown', onClick)
+    }
+    // Clean up the event listener on unmount
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('mousedown', onClick)
+      }
+    }
+  } , [raycaster, mouse, camera])
+
+
+  useFrame(({ camera }) => {
+    // Update the position of the object to follow the camera
+    if (gridRef.current) {
+      // Calculate the camera's downward direction
+      const down = new THREE.Vector3(0, -1, 0)
+      down.applyQuaternion(camera.quaternion)
+  
+      // Create a new position for the grid that's offset from the camera's position along the camera's downward direction
+      const gridPosition = camera.position.clone().add(down.multiplyScalar(4))
+  
+      // Set the grid's position to the new position
+      gridRef.current.position.copy(gridPosition)
+  
+      // Update the position and rotation of the object
+      gridRef.current.rotation.copy(camera.rotation)
+      
+      const adjustedCameraPosition = camera.position.clone()
+      adjustedCameraPosition.y += Math.tan(THREE.MathUtils.degToRad(-50))
+
+
+      // Copy the object's rotation to the grid's rotation
+      // gridRef.current.lookAt(adjustedCameraPosition)
+    }
+  })
+
+  
+
+  return (
+    <>
+      <gridHelper ref={gridRef} args={[500,500]} />
+    </>
+  )
+}
+
 
 export default function Home() {
   const [visiblePlanets, setVisiblePlanets] = useState([
@@ -51,6 +112,7 @@ export default function Home() {
           <ambientLight intensity={Math.PI / 2} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
           <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+          <MovingGrid />
           <System setPlanets={setPlanets} planets={planets}/>
           <OrbitControls zoom0={0.5} enabled={isOrbit}/>
           <Stars />
