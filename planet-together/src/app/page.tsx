@@ -26,9 +26,9 @@ export interface PlanetData {
 
 export default function Home() {
   const [visiblePlanets, setVisiblePlanets] = useState([
-    { texture: 'images/sat0fds1.jpg', isVisible: true },
-    { texture: 'images/mar2kuu2.jpg', isVisible: true },
-    { texture: 'images/ear0xuu2.jpg', isVisible: true },
+    { name: 'Saturn', texture: 'images/sat0fds1.jpg', isVisible: true },
+    { name: 'Mars', texture: 'images/mar2kuu2.jpg', isVisible: true },
+    { name: 'Earth', texture: 'images/ear0xuu2.jpg', isVisible: true },
   ]);
   
   const [isOrbit, setIsOrbit] = useState(true)
@@ -46,7 +46,7 @@ export default function Home() {
   return (
     <main className="bg-zinc-800 h-screen">
       <div className="flex h-full">
-        <Sidebar setIsOrbit={ setIsOrbit }/>
+        <Sidebar visiblePlanets={visiblePlanets} setIsOrbit={setIsOrbit}/>
         <Canvas>
           <ambientLight intensity={Math.PI / 2} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
