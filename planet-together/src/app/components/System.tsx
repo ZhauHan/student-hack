@@ -1,17 +1,20 @@
 "use client"
 import * as THREE from 'three'
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react'
-import { Canvas, useFrame, ThreeElements, dispose } from '@react-three/fiber'
+import { Canvas, useFrame, ThreeElements, dispose, useThree } from '@react-three/fiber'
 import Planet from './Planet'
 import { PlanetData } from '../page'
 import { Line } from '@react-three/drei'
 import { SliderValue } from '@nextui-org/react'
+import { Explosion } from './Explosion';
+import { start } from 'repl'
 
 export default function System(props: {setPlanets: React.Dispatch<React.SetStateAction<PlanetData[]>>, planets: PlanetData[], updateFreq: SliderValue}) {
 
   const G = 6.67 * 10 ** (-11)
   const ratio = 1e-30
   const period = 60
+  const { scene } = useThree()
       
   const planet1: PlanetData = {
     planetName: "planet1",
@@ -140,21 +143,20 @@ export default function System(props: {setPlanets: React.Dispatch<React.SetState
               const forceMagnitude = (G * currPlanet.mass * otherPlanet.mass) / distanceSquared;
               const force = direction.normalize().multiplyScalar(forceMagnitude);
               
-              acceleration.add(force.divideScalar(currPlanet.mass));
+              acceleration.add(force.divideScalar(currPlanet.mass).multiplyScalar(2));
               const distance = currPlanet.position.distanceTo(otherPlanet.position);
 
               if (distance < otherPlanet.radius + currPlanet.radius) {
-
-                //currPlanet.show = false;
-                //setTempRemove([...tempRemove, index]);
-                //acceleration.copy(new THREE.Vector3(0,0,0))
-                //currPlanet.velocity.copy(new THREE.Vector3(0,0,0))
+                
                 if (!currPlanet.ref.current) return
                 if (!currPlanet.ref.current.parent) return
                 currPlanet.ref!.current!.parent.remove(currPlanet.ref!.current!)
                 removalArray.push(currPlanet)
                 removalArray.push(otherPlanet)
                 removal = true
+                const explosion = new Explosion(scene, 1000, currPlanet.position);
+                explosion.animate();
+
                 return
               }
             }
